@@ -295,6 +295,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/21/JAVA%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Floyd's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/01/21/JAVA%E5%9F%BA%E7%A1%80/" itemprop="url">JAVA基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-21T15:34:48+08:00">
+                2021-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-Lambda表达式"><a href="#1-Lambda表达式" class="headerlink" title="1. Lambda表达式"></a>1. Lambda表达式</h3><ol>
+<li>一些参数</li>
+<li>一个箭头</li>
+<li>一段代码</li>
+</ol>
+<h4 id="1-1格式"><a href="#1-1格式" class="headerlink" title="1.1格式"></a>1.1格式</h4><p>（参数列表）-&gt; {重写方法的代码}</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cook</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">makeFood</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    <span class="comment">//匿名内部类</span></span><br><span class="line">    invokeCook(<span class="keyword">new</span> Cook()&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">makeFood</span><span class="params">()</span></span>&#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//Lambda表达式</span></span><br><span class="line">    invokeCook(()-&gt;&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeCook</span><span class="params">(Cook cook)</span></span>&#123;</span><br><span class="line">	cook.makeFood();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-2使用前提"><a href="#1-2使用前提" class="headerlink" title="1.2使用前提"></a>1.2使用前提</h4><ol>
+<li>必须有接口，且接口中有且只有一个抽象方法（函数式接口）</li>
+<li>必须具有上下文推断</li>
+</ol>
+<h3 id="2-网络编程"><a href="#2-网络编程" class="headerlink" title="2.网络编程"></a>2.网络编程</h3><h4 id="2-1软件结构"><a href="#2-1软件结构" class="headerlink" title="2.1软件结构"></a>2.1软件结构</h4><ol>
+<li>C/S结构（Client/Server 客户端/服务器）：QQ</li>
+<li>B/S结构（Browser/Server 浏览器/服务器）：谷歌</li>
+</ol>
+<h4 id="2-2网络通信协议"><a href="#2-2网络通信协议" class="headerlink" title="2.2网络通信协议"></a>2.2网络通信协议</h4><ol>
+<li><p>TCP/IP协议<br></p>
+<p>查看本机IP地址：ipconfig <br></p>
+<p>检查网络是否联通：ping Ip地址<br></p>
+<p>本机IP地址： 127.0.0.1(localhost)<br></p>
+<p>常见端口号：</p>
+<ul>
+<li>网络端口：80</li>
+<li>数据库mysql:3306 oracle:1521</li>
+<li>Tomcat服务器:8080</li>
+</ul>
+</li>
+<li><p>UDP协议</p>
+</li>
+</ol>
+<h4 id="2-3-TCP通信程序"><a href="#2-3-TCP通信程序" class="headerlink" title="2.3 TCP通信程序"></a>2.3 TCP通信程序</h4><h5 id="Socket类"><a href="#Socket类" class="headerlink" title="Socket类"></a>Socket类</h5><p>（服务器获取到请求的客户端对象Socket，使用每个客户端Socket中的IO流和客户端进行交互）</p>
+<ol>
+<li>java.net.Socket:实现客户端套接字</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/19/tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -584,7 +738,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -597,7 +751,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

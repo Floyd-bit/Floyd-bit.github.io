@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="1. Lambda表达式 一些参数 一个箭头 一段代码  1.1格式（参数列表）-&gt; {重写方法的代码} 123public interface Cook&amp;#123;	public abstract void makeFood();&amp;#125; 123456789101112131415161718public class Demo&amp;#123;public static void main(">
+<meta name="description" content="javaSE">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA基础">
 <meta property="og:url" content="http://example.com/2021/01/21/JAVA%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Floyd&#39;s blog">
-<meta property="og:description" content="1. Lambda表达式 一些参数 一个箭头 一段代码  1.1格式（参数列表）-&gt; {重写方法的代码} 123public interface Cook&amp;#123;	public abstract void makeFood();&amp;#125; 123456789101112131415161718public class Demo&amp;#123;public static void main(">
+<meta property="og:description" content="javaSE">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-21T07:34:48.000Z">
-<meta property="article:modified_time" content="2021-01-21T07:39:15.874Z">
+<meta property="article:modified_time" content="2021-01-21T14:57:55.746Z">
 <meta property="article:author" content="zzx">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
@@ -355,6 +355,10 @@
           
 
           
+              <div class="post-description">
+                  javaSE
+              </div>
+          
 
         </div>
       </header>
@@ -386,7 +390,7 @@
 <li>B/S结构（Browser/Server 浏览器/服务器）：谷歌</li>
 </ol>
 <h4 id="2-2网络通信协议"><a href="#2-2网络通信协议" class="headerlink" title="2.2网络通信协议"></a>2.2网络通信协议</h4><ol>
-<li><p>TCP/IP协议<br></p>
+<li><p><strong>TCP/IP协议</strong><br></p>
 <p>查看本机IP地址：ipconfig <br></p>
 <p>检查网络是否联通：ping Ip地址<br></p>
 <p>本机IP地址： 127.0.0.1(localhost)<br></p>
@@ -397,14 +401,88 @@
 <li>Tomcat服务器:8080</li>
 </ul>
 </li>
-<li><p>UDP协议</p>
+<li><p><strong>UDP协议</strong></p>
 </li>
 </ol>
 <h4 id="2-3-TCP通信程序"><a href="#2-3-TCP通信程序" class="headerlink" title="2.3 TCP通信程序"></a>2.3 TCP通信程序</h4><h5 id="Socket类"><a href="#Socket类" class="headerlink" title="Socket类"></a>Socket类</h5><p>（服务器获取到请求的客户端对象Socket，使用每个客户端Socket中的IO流和客户端进行交互）</p>
 <ol>
-<li>java.net.Socket:实现客户端套接字</li>
+<li><p>java.net.Socket:实现<strong>客户端</strong>套接字(服务器先启动，才会正常连接)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line">Socket(String host,<span class="keyword">int</span> post)<span class="comment">//服务器主机名称和端口号</span></span><br><span class="line"><span class="comment">//成员方法</span></span><br><span class="line">getOutputStream()</span><br><span class="line">getInputStream()</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> <span class="comment">//关闭套接字</span></span></span><br><span class="line"><span class="function"><span class="comment">//实现步骤</span></span></span><br><span class="line"><span class="function"><span class="comment">/*</span></span></span><br><span class="line"><span class="function"><span class="comment">	1.创建一个客户端对象Socket</span></span></span><br><span class="line"><span class="function"><span class="comment">	2.使用Socket对象中的方法getOutputStream()获取网络字节输出流</span></span></span><br><span class="line"><span class="function"><span class="comment">	3.使用OutputStream对象中的方法write，给服务器发送数据</span></span></span><br><span class="line"><span class="function"><span class="comment">	4.使用Socket对象中的方法getInputStream()获取InputStream对象</span></span></span><br><span class="line"><span class="function"><span class="comment">	5.使用InputStream中的方法read，读取服务器写回的数据</span></span></span><br><span class="line"><span class="function"><span class="comment">	6.释放资源（Socket）</span></span></span><br><span class="line"><span class="function"><span class="comment">*/</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class TCPClient</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		Socket socket = <span class="keyword">new</span> Socket(<span class="string">&quot;127.0.0.1&quot;</span>,<span class="number">8888</span>);</span><br><span class="line">        OutputStream os = socket.getOutputStream();</span><br><span class="line">        os.write(<span class="string">&quot;hello&quot;</span>.getBytes());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.java.net.serverSocket实现<strong>服务器端</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//接受客户端请求，读取客户端发送的数据，给客户端回写数据</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">构造方法</span></span><br><span class="line"><span class="comment">SeverSocket(int port)  创建绑定到特定端口的服务器套接字</span></span><br><span class="line"><span class="comment">成员方法</span></span><br><span class="line"><span class="comment">Socket accept() 侦听并接受到此套接字的连接</span></span><br><span class="line"><span class="comment">实现步骤</span></span><br><span class="line"><span class="comment">1.创建服务器ServerSocket对象</span></span><br><span class="line"><span class="comment">2.使用ServerSocket的方法accept，获取到请求的客户端对象Socket</span></span><br><span class="line"><span class="comment">3.使用getInputStream（）获取InputStram对象</span></span><br><span class="line"><span class="comment">4.使用getIputStream中的read，读取客户端发送的数据</span></span><br><span class="line"><span class="comment">5.使用Socket对象中的方法getOutputStream()获取网络字节输出流</span></span><br><span class="line"><span class="comment">6.使用OutputStream对象中的方法write，给服务器写回数据</span></span><br><span class="line"><span class="comment">7.释放资源（Socket,ServerSocket）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TCPServer</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		ServerSocket server = <span class="keyword">new</span> ServerSocket(<span class="number">8888</span>);</span><br><span class="line">        Socket socket = server.accept();</span><br><span class="line">        InputStream is = socket,getInputStream();</span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        <span class="keyword">int</span> len = is.read(bytes);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(bytes,<span class="number">0</span>,len));</span><br><span class="line">        OutputStream os = socket.getOutputStream();</span><br><span class="line">        os.write(<span class="string">&quot;accept&quot;</span>.getbytes());</span><br><span class="line">        socket.close();</span><br><span class="line">        server.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-函数式接口"><a href="#3-函数式接口" class="headerlink" title="3.函数式接口"></a>3.函数式接口</h3></li>
 </ol>
+<p>有且仅有一个抽象方法的接口，适用于函数式编程（Lambda）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span> <span class="comment">//检测接口是否是函数式接口，是则编译成功，否则编译失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyFunctionalInterface</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
+<h4 id="3-1使用（作为方法的参数和返回值类型）"><a href="#3-1使用（作为方法的参数和返回值类型）" class="headerlink" title="3.1使用（作为方法的参数和返回值类型）"></a>3.1使用（作为方法的参数和返回值类型）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(MyFunctionalInterface myInter)</span></span>&#123;</span><br><span class="line">		myInter.method();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">		show(()-&gt;&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;Lambda表达式&quot;</span>);</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="3-2常用函数式接口-java-util-function"><a href="#3-2常用函数式接口-java-util-function" class="headerlink" title="3.2常用函数式接口(java.util.function)"></a>3.2常用函数式接口(java.util.function)</h4><ol>
+<li><p>Supplier<T>接口，只包含一个无参的方法T get(),用来获取一个泛型参数指定类型的对象数据（生产型接口）</T></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getString</span><span class="params">(Supplier&lt;String&gt; sup)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sup.get();</span><br><span class="line">    &#125;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        String s = getString(()-&gt;&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;1&quot;</span>;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>Consumer<T>接口，包含void accept(T t),消费一个指定泛型的数据</T></p>
+</li>
+<li><p>Predicate<T>接口,包含boolean test(T t),用于判断是否为指定泛型</T></p>
+</li>
+<li><p>Function<T>接口，包含R apply(T t),用于将T转换为R</T></p>
+</li>
+</ol>
+<h3 id="4-Junit单元测试-白盒测试"><a href="#4-Junit单元测试-白盒测试" class="headerlink" title="4.Junit单元测试(白盒测试)"></a>4.Junit单元测试(白盒测试)</h3><ul>
+<li><p>加入@Test注解</p>
+</li>
+<li><p>导入Junit依赖环境</p>
+<p>@Before @After 注解</p>
+</li>
+</ul>
+<h3 id="5-反射"><a href="#5-反射" class="headerlink" title="5.反射"></a>5.反射</h3><h4 id="5-1概念"><a href="#5-1概念" class="headerlink" title="5.1概念"></a>5.1概念</h4><p>java代码在计算机中三个阶段：Source源代码阶段-&gt;Class类对象阶段-&gt;Runtime运行时阶段<br><br>成员变量 Field[] fields         构造方法 Constructor[] cos      成员方法Method[] methods</p>
+<p>将类的各个组成部分封装为其他对象，这就是反射机制</p>
+<h4 id="5-2获取Class对象的方式"><a href="#5-2获取Class对象的方式" class="headerlink" title="5.2获取Class对象的方式"></a>5.2获取Class对象的方式</h4><ol>
+<li><p>Class.forName(“全类名”)      源代码阶段</p>
+<p>多用于配置文件</p>
+</li>
+<li><p>类名.class           Class类对象阶段</p>
+<p>多用于参数传递</p>
+</li>
+<li><p>对象.getClass     运行时阶段</p>
+<p>多用于对象获取字节码的方式</p>
+</li>
+</ol>
+<h4 id="5-3Class对象功能"><a href="#5-3Class对象功能" class="headerlink" title="5.3Class对象功能"></a>5.3Class对象功能</h4><ul>
+<li><p>获取功能：<br>1.获取成员变量 </p>
+<p> Field[] getFileds()</p>
+<p>Field getField(String name)</p>
+<p>Field getDeclaredFields()   //不考虑修饰符</p>
+<p>Field getDeclaredField(String name)</p>
+<p>Field的操作：</p>
+<p>void set(Object obj,Object value)</p>
+<p>get(Object)</p>
+<p>setAccessible(true)   //暴力反射</p>
+<p>2.获取构造方法</p>
+<p>Constructor&lt;?&gt;[] getConstructors()</p>
+<p>Constructor<T> getConstructor()</T></p>
+<p>Constructor&lt;?&gt;[] getDeclaredConstructors()</p>
+<p>Constructor<T> getDeclaredConstructor() </T></p>
+<p>创建对象：<br>T newInstance(Object…  initargs)</p>
+<p>3.获取成员方法</p>
+<p>Method[] getMethods()</p>
+<p>Method getMethod(String name)</p>
+<p>Method getDeclaredMethods()</p>
+<p>Method getDeclaredMethod(String name)</p>
+<p>执行方法</p>
+<p>Object invoke(Object obj,Object… args)</p>
+<p>获取方法名称：</p>
+<p>String getName()</p>
+<p>4.获取类名</p>
+</li>
+</ul>
+<h3 id="6-注解"><a href="#6-注解" class="headerlink" title="6.注解"></a>6.注解</h3>
       
     </div>
     
@@ -569,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. Lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E4%BD%BF%E7%94%A8%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2使用前提</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2.网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1软件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2网络通信协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-TCP%E9%80%9A%E4%BF%A1%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 TCP通信程序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket%E7%B1%BB"><span class="nav-number">2.3.1.</span> <span class="nav-text">Socket类</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. Lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E4%BD%BF%E7%94%A8%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2使用前提</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2.网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1软件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2网络通信协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-TCP%E9%80%9A%E4%BF%A1%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 TCP通信程序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket%E7%B1%BB"><span class="nav-number">2.3.1.</span> <span class="nav-text">Socket类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">3.函数式接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BD%9C%E4%B8%BA%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">3.1使用（作为方法的参数和返回值类型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3-java-util-function"><span class="nav-number">3.2.</span> <span class="nav-text">3.2常用函数式接口(java.util.function)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Junit%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-%E7%99%BD%E7%9B%92%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">4.Junit单元测试(白盒测试)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8F%8D%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">5.反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1%E6%A6%82%E5%BF%B5"><span class="nav-number">5.1.</span> <span class="nav-text">5.1概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2获取Class对象的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3Class%E5%AF%B9%E8%B1%A1%E5%8A%9F%E8%83%BD"><span class="nav-number">5.3.</span> <span class="nav-text">5.3Class对象功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B3%A8%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">6.注解</span></a></li></ol></div>
             
 
           </div>

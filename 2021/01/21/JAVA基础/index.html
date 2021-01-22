@@ -87,7 +87,7 @@
 <meta property="og:description" content="javaSE">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-21T07:34:48.000Z">
-<meta property="article:modified_time" content="2021-01-21T14:57:55.746Z">
+<meta property="article:modified_time" content="2021-01-22T05:35:57.431Z">
 <meta property="article:author" content="zzx">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
@@ -374,9 +374,13 @@
 
       
         <h3 id="1-Lambda表达式"><a href="#1-Lambda表达式" class="headerlink" title="1. Lambda表达式"></a>1. Lambda表达式</h3><ol>
-<li>一些参数</li>
-<li>一个箭头</li>
-<li>一段代码</li>
+<li><p>一些参数</p>
+</li>
+<li><p>一个箭头</p>
+</li>
+<li><p>一段代码</p>
+<p><code>匿名内部类的语法糖</code></p>
+</li>
 </ol>
 <h4 id="1-1格式"><a href="#1-1格式" class="headerlink" title="1.1格式"></a>1.1格式</h4><p>（参数列表）-&gt; {重写方法的代码}</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cook</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">makeFood</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -482,7 +486,59 @@
 <p>4.获取类名</p>
 </li>
 </ul>
-<h3 id="6-注解"><a href="#6-注解" class="headerlink" title="6.注解"></a>6.注解</h3>
+<h3 id="6-注解"><a href="#6-注解" class="headerlink" title="6.注解"></a>6.注解</h3><h4 id="6-1作用"><a href="#6-1作用" class="headerlink" title="6.1作用"></a>6.1作用</h4><ul>
+<li><p>编写文档</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@author</span> zzx</span><br><span class="line"><span class="meta">@version</span> <span class="number">1.0</span></span><br><span class="line"><span class="meta">@since</span> <span class="number">1.5</span></span><br></pre></td></tr></table></figure></li>
+<li><p>代码分析(使用反射)</p>
+</li>
+<li><p>编译检查 Override</p>
+</li>
+</ul>
+<h4 id="6-2预定义注解"><a href="#6-2预定义注解" class="headerlink" title="6.2预定义注解"></a>6.2预定义注解</h4><ul>
+<li>@Override:检查是否是继承自父类的</li>
+<li>@Deprecated：将标注的内容已过时</li>
+<li>@SuppressWarnings：压制警告</li>
+</ul>
+<h4 id="6-3自定义注解"><a href="#6-3自定义注解" class="headerlink" title="6.3自定义注解"></a>6.3自定义注解</h4><p>​            格式：</p>
+<p>​                    元注解</p>
+<p>​                    public @interface 注解名称{</p>
+<p>​                            属性列表；</p>
+<p>​                    }</p>
+<p>​            属性的返回值类型可以是：</p>
+<ul>
+<li><code>基本数据类型</code></li>
+<li><code>String</code></li>
+<li><code>枚举</code></li>
+<li><code>注解</code></li>
+<li><code>以上类型的数组</code>                    </li>
+</ul>
+<p><code>定义了属性，在使用时需要给属性赋值</code>：</p>
+<p>在定义属性时可以使用default关键字赋初值</p>
+<p>如果只有一个属性需要赋值，并且属性名称是value，在使用时可以省略value</p>
+<p>数组类型赋值，使用{}包裹，如果只有一个值，则{}可以省略</p>
+<h4 id="6-4元注解（用于描述注解的注解）"><a href="#6-4元注解（用于描述注解的注解）" class="headerlink" title="6.4元注解（用于描述注解的注解）"></a>6.4元注解（用于描述注解的注解）</h4><ul>
+<li><p><code>@Target:描述注解能够作用的位置</code></p>
+<p> ElementType取值：<br> TYPE 类  METHOD 方法  FIELD 成员变量</p>
+</li>
+<li><p><code>@Retention:描述注解被保留的阶段</code></p>
+<p>RetentionPolicy取值： </p>
+<p>SOURCE 源代码 CLASS 类加载  <code>RUNTIME 运行时</code></p>
+</li>
+<li><p><code>@Documented:描述注解是否被抽取到api文档中</code></p>
+</li>
+<li><p><code>@Inherired:描述注解是否被子类继承</code></p>
+</li>
+</ul>
+<h4 id="6-5解析注解（获取注解中定义的属性值）"><a href="#6-5解析注解（获取注解中定义的属性值）" class="headerlink" title="6.5解析注解（获取注解中定义的属性值）"></a>6.5解析注解（获取注解中定义的属性值）</h4><ol>
+<li><p>获取注解定义的位置的对象（Class,Mehod,Field）</p>
+</li>
+<li><p>获取指定的注解</p>
+<p>getAnnotation(Class)</p>
+</li>
+<li><p>调用注解中的抽象方法获取属性值</p>
+</li>
+</ol>
+
       
     </div>
     
@@ -521,6 +577,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/22/SpringCloud-Netflix/" rel="prev" title="SpringCloud Netflix">
+                SpringCloud Netflix <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -601,7 +661,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +674,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -647,7 +707,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. Lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E4%BD%BF%E7%94%A8%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2使用前提</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2.网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1软件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2网络通信协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-TCP%E9%80%9A%E4%BF%A1%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 TCP通信程序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket%E7%B1%BB"><span class="nav-number">2.3.1.</span> <span class="nav-text">Socket类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">3.函数式接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BD%9C%E4%B8%BA%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">3.1使用（作为方法的参数和返回值类型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3-java-util-function"><span class="nav-number">3.2.</span> <span class="nav-text">3.2常用函数式接口(java.util.function)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Junit%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-%E7%99%BD%E7%9B%92%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">4.Junit单元测试(白盒测试)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8F%8D%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">5.反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1%E6%A6%82%E5%BF%B5"><span class="nav-number">5.1.</span> <span class="nav-text">5.1概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2获取Class对象的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3Class%E5%AF%B9%E8%B1%A1%E5%8A%9F%E8%83%BD"><span class="nav-number">5.3.</span> <span class="nav-text">5.3Class对象功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B3%A8%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">6.注解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. Lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E4%BD%BF%E7%94%A8%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2使用前提</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2.网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1软件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2网络通信协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-TCP%E9%80%9A%E4%BF%A1%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 TCP通信程序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Socket%E7%B1%BB"><span class="nav-number">2.3.1.</span> <span class="nav-text">Socket类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">3.函数式接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BD%9C%E4%B8%BA%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">3.1使用（作为方法的参数和返回值类型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3-java-util-function"><span class="nav-number">3.2.</span> <span class="nav-text">3.2常用函数式接口(java.util.function)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Junit%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-%E7%99%BD%E7%9B%92%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">4.Junit单元测试(白盒测试)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8F%8D%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">5.反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1%E6%A6%82%E5%BF%B5"><span class="nav-number">5.1.</span> <span class="nav-text">5.1概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">5.2获取Class对象的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3Class%E5%AF%B9%E8%B1%A1%E5%8A%9F%E8%83%BD"><span class="nav-number">5.3.</span> <span class="nav-text">5.3Class对象功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B3%A8%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">6.注解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1%E4%BD%9C%E7%94%A8"><span class="nav-number">6.1.</span> <span class="nav-text">6.1作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2%E9%A2%84%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="nav-number">6.2.</span> <span class="nav-text">6.2预定义注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="nav-number">6.3.</span> <span class="nav-text">6.3自定义注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-4%E5%85%83%E6%B3%A8%E8%A7%A3%EF%BC%88%E7%94%A8%E4%BA%8E%E6%8F%8F%E8%BF%B0%E6%B3%A8%E8%A7%A3%E7%9A%84%E6%B3%A8%E8%A7%A3%EF%BC%89"><span class="nav-number">6.4.</span> <span class="nav-text">6.4元注解（用于描述注解的注解）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5%E8%A7%A3%E6%9E%90%E6%B3%A8%E8%A7%A3%EF%BC%88%E8%8E%B7%E5%8F%96%E6%B3%A8%E8%A7%A3%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84%E5%B1%9E%E6%80%A7%E5%80%BC%EF%BC%89"><span class="nav-number">6.5.</span> <span class="nav-text">6.5解析注解（获取注解中定义的属性值）</span></a></li></ol></li></ol></div>
             
 
           </div>

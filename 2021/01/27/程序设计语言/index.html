@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="exam," />
 
 
 
@@ -79,17 +79,25 @@
 
 
 
-<meta name="description" content="Where there is a will,there is a way">
+<meta name="description" content="软考（三）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="程序设计语言">
 <meta property="og:url" content="http://example.com/2021/01/27/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="Floyd&#39;s blog">
-<meta property="og:description" content="Where there is a will,there is a way">
+<meta property="og:description" content="软考（三）">
 <meta property="og:locale">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132331.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132405.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132623.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206220452.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206221830.png">
+<meta property="og:image" content="http://example.com/.com//Users/hp/AppData/Roaming/Typora/typora-user-images/image-20210206223540185.png">
 <meta property="article:published_time" content="2021-01-27T15:24:16.000Z">
-<meta property="article:modified_time" content="2021-01-27T15:24:16.571Z">
+<meta property="article:modified_time" content="2021-02-06T14:38:00.413Z">
 <meta property="article:author" content="zzx">
+<meta property="article:tag" content="exam">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132331.png">
 
 
 
@@ -354,6 +362,10 @@
           
 
           
+              <div class="post-description">
+                  软考（三）
+              </div>
+          
 
         </div>
       </header>
@@ -368,7 +380,40 @@
       
 
       
-        
+        <h3 id="1-编译与解释"><a href="#1-编译与解释" class="headerlink" title="1.编译与解释"></a>1.编译与解释</h3><h4 id="1-1解释型语言和编译型语言"><a href="#1-1解释型语言和编译型语言" class="headerlink" title="1.1解释型语言和编译型语言"></a>1.1解释型语言和编译型语言</h4><p>相同之处：都需要转换成二进制才能执行。<br>不同之处：<br>1、<strong>运行的时候是否需要编译器</strong><br>编译型语言运行的是最终的二进制代码了，所以不再需要编译器；但是解释型语言边解释、边运行，所以运行时候还有部分代码没有解释好举个例子：在浏览器里，要看 html 效果，要通过带有内置编译工具的软件去查看（如：浏览器或者模拟浏览器的工具）。<br>2、<strong>执行速度</strong><br>毫无疑问边翻译边执行的解释型语言的速度会比编译型语言运行速度要慢。但是CPU的运行速度如果很快，你可能看不出来，偶尔会看到“有点卡”的效果。<br>3、可移植性对比<br>编译型语言运行二进制内容，一旦 CPU 指令改变，之前的二进制文件可能运行不了了。即在其他硬件平台上运行，可能出错，如果想在其他平台运行就需要编译出新的二进制文件，所以编译型语言可移植性差；解释型语言在需要的时候才开始编译、运行，所以具有可移植性，在很多平台都能运行起来。<br>4、升级上对比<br>编译型语言的二进制文件如果要升级，需要重新下载一个新的二进制文件了。如QQ的升级，就是要重新下载、安装、覆盖；<br>而解释型的语言，只要重新写好源代码即可。如网站平台升级，用户只要重新刷新即可。<br>5、 应用领域<br>编译型语言应用领域通常是安装软件，如：桌面或手机上安装软件；<br>解释型的语言的应用领域通常是互联网，网站等，刷新就可以看到最新效果</p>
+<p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132331.png" alt="在这里插入图片描述"></p>
+<p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132405.png" alt="在这里插入图片描述"></p>
+<h4 id="1-2编译过程"><a href="#1-2编译过程" class="headerlink" title="1.2编译过程"></a>1.2编译过程</h4><p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206132623.png" alt="image-20210206132623659"></p>
+<blockquote>
+<p>对源程序的结构进行分析</p>
+</blockquote>
+<ul>
+<li><p>词法分析：识别出一个个“单词”符号，如关键字、标识符、常数、运算符、分隔符等</p>
+</li>
+<li><p>语法分析：将单词符号分解成语法单位，如表达式、语句、程序等</p>
+<blockquote>
+<p>依据语言的语义规则</p>
+</blockquote>
+</li>
+<li><p>语义分析：分析各语法结构的含义，检查源程序是否包含静态语义错误</p>
+</li>
+<li><p>中间代码生成：根据语义分析的输出生成中间代码，最常见的一种中间代码是三地址码（采取四元式）、树（图）</p>
+<p>（运算符，运算对象1，运算对象2，运算结果）</p>
+<p> 中间代码不依赖于具体机器</p>
+</li>
+</ul>
+<ul>
+<li><p>代码优化</p>
+</li>
+<li><p>目标代码生成</p>
+</li>
+</ul>
+<h4 id="1-3编译器和解释器"><a href="#1-3编译器和解释器" class="headerlink" title="1.3编译器和解释器"></a>1.3编译器和解释器</h4><p>编译器将源程序翻译成目标语言程序，然后在计算机上运行目标程序</p>
+<p>解释器直接解释执行源程序或将源程序翻译成魔种中间代码后再加以执行</p>
+<h3 id="2-文法"><a href="#2-文法" class="headerlink" title="2.文法"></a>2.文法</h3><h4 id="2-1文法的定义"><a href="#2-1文法的定义" class="headerlink" title="2.1文法的定义"></a>2.1文法的定义</h4><p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206220452.png" alt="image-20210206220449658"></p>
+<h4 id="2-2文法的类型"><a href="#2-2文法的类型" class="headerlink" title="2.2文法的类型"></a>2.2文法的类型</h4><p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210206221830.png" alt="image-20210206221830811"></p>
+<h4 id="2-3语法推导树"><a href="#2-3语法推导树" class="headerlink" title="2.3语法推导树"></a>2.3语法推导树</h4><p><img src="/.com//Users\hp\AppData\Roaming\Typora\typora-user-images\image-20210206223540185.png" alt="image-20210206223540185"></p>
+<h3 id="3-正规式"><a href="#3-正规式" class="headerlink" title="3.正规式"></a><strong><em>3.正规式</em></strong></h3><h3 id="4-有限自动机"><a href="#4-有限自动机" class="headerlink" title="4.有限自动机"></a>4.有限自动机</h3><h3 id="5-表达式"><a href="#5-表达式" class="headerlink" title="5.表达式"></a><em>5.表达式</em></h3><h3 id="6-传值与传址"><a href="#6-传值与传址" class="headerlink" title="6.传值与传址"></a><em>6.传值与传址</em></h3><h3 id="7-多种程序语言特点"><a href="#7-多种程序语言特点" class="headerlink" title="7.多种程序语言特点"></a>7.多种程序语言特点</h3>
       
     </div>
     
@@ -382,6 +427,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/exam/" rel="tag"># exam</a>
+          
+        </div>
       
 
       
@@ -456,8 +507,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -476,7 +536,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -489,7 +549,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -512,6 +572,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%96%E8%AF%91%E4%B8%8E%E8%A7%A3%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">1.编译与解释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80%E5%92%8C%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">1.1解释型语言和编译型语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">1.2编译过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">1.3编译器和解释器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%96%87%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2.文法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E6%96%87%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">2.1文法的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E6%96%87%E6%B3%95%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.2文法的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3%E8%AF%AD%E6%B3%95%E6%8E%A8%E5%AF%BC%E6%A0%91"><span class="nav-number">2.3.</span> <span class="nav-text">2.3语法推导树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%AD%A3%E8%A7%84%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">3.正规式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">4.有限自动机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">5.表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%BC%A0%E5%80%BC%E4%B8%8E%E4%BC%A0%E5%9D%80"><span class="nav-number">6.</span> <span class="nav-text">6.传值与传址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%A4%9A%E7%A7%8D%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80%E7%89%B9%E7%82%B9"><span class="nav-number">7.</span> <span class="nav-text">7.多种程序语言特点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

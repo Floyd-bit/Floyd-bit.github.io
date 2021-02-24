@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mybatis," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Mybatis源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis源码分析">
+<meta property="og:url" content="http://example.com/2021/02/17/Mybatis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Floyd&#39;s blog">
+<meta property="og:description" content="Mybatis源码学习">
+<meta property="og:locale">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217143832.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217143915.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217144837.png">
+<meta property="og:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210219153412.png">
+<meta property="article:published_time" content="2021-02-17T03:21:28.000Z">
+<meta property="article:modified_time" content="2021-02-24T05:21:38.380Z">
+<meta property="article:author" content="zzx">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217143832.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/02/17/Mybatis源码分析/"/>
+
+
+
+
+
+  <title>Mybatis源码分析 | Floyd's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Floyd's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/17/Mybatis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Floyd's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mybatis源码分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-17T11:21:28+08:00">
+                2021-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">
+                  Mybatis源码学习
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217143832.png" alt="image"></p>
+<p>​                                                                                              （整体架构图）</p>
+<p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217143915.png" alt="image"></p>
+<p>​                                                                                          （源码包架构图）</p>
+<h3 id="1-配置文件解析过程"><a href="#1-配置文件解析过程" class="headerlink" title="1.配置文件解析过程"></a>1.配置文件解析过程</h3><p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210217144837.png" alt="image"></p>
+<p>根据配置文件构建SqlSessionFactory</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String resource = <span class="string">&quot;mybatis-config.xml&quot;</span>;</span><br><span class="line">InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br></pre></td></tr></table></figure>
+<p>​    我们首先会使用 MyBatis 提供的工具类 <strong>Resources</strong> <strong>加载配置文件</strong>，<strong>得到一个输入流</strong>。然后再通过 <strong>SqlSessionFactoryBuilder 对象的 build 方法构建 SqlSessionFactory对象</strong>。这里的 build 方法是我们分析配置文件解析过程的入口方法.</p>
+<p>build方法创建了配置文件解析器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(InputStream inputStream,String environment,Properties properties)</span></span>&#123;</span><br><span class="line"><span class="comment">//创建文件解析器</span></span><br><span class="line">XMLConfigBuilder praser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="comment">//调用parse方法解析配置文件，生成Configuration对象</span></span><br><span class="line"><span class="keyword">return</span> build(parser.prase());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置文件通过XMLConfigBuilder进行解析，下面是XMLCnfigBuilder的prase方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Configuration <span class="title">parse</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//解析配置</span></span><br><span class="line">parseConfiguration(parser.evalNode(<span class="string">&quot;/configuration&quot;</span>));</span><br><span class="line"><span class="keyword">return</span> configuration;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>xpath表达式/configuration代表的是配置文件中的<Configuration>结点，这里通过xpath选中这个结点，并传递给parseConfiguration方法：</Configuration></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">parseConfiguration</span><span class="params">(XNode root)</span></span>&#123;</span><br><span class="line">	<span class="comment">//配置properties配置</span></span><br><span class="line">	propertiesElement(root.evalNode(<span class="string">&quot;properties&quot;</span>));</span><br><span class="line">	<span class="comment">//解析settings配置，并将其转换为Properties对象</span></span><br><span class="line">	Properties settings = settingAsProperties(root.evalNode(<span class="string">&quot;settings&quot;</span>));</span><br><span class="line">	<span class="comment">//加载vfs</span></span><br><span class="line">	loadCustomVfs(settings);</span><br><span class="line">	<span class="comment">//解析typeAlases配置</span></span><br><span class="line">	typeAliasesElement(root.evalNode(<span class="string">&quot;typeAliases&quot;</span>));</span><br><span class="line">	<span class="comment">//解析plugins配置</span></span><br><span class="line">	pluginElement(root.evalNode(<span class="string">&quot;plugins&quot;</span>));</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1解析properties节点"><a href="#1-1解析properties节点" class="headerlink" title="1.1解析properties节点"></a>1.1解析properties节点</h4><p>properties节点配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">&quot;jdbc.properties&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbc.username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;coolblog&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;hello&quot;</span> <span class="attr">value</span>=<span class="string">&quot;world&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><properties>节点解析主要包含三个步骤，一是解析<properties>节点的子节点，并将解析结果设置到 Properties 对象中。二是从文件系统或通过网络读取属性配置，这取决于<properties>节点的 resource 和 url 是否为空。最后一步则是将包含属性信息Properties 对象设置到<strong>XPathParser</strong> 和 <strong>Configuration</strong> 中。</properties></properties></properties></p>
+<h4 id="1-2解析settings节点"><a href="#1-2解析settings节点" class="headerlink" title="1.2解析settings节点"></a>1.2解析settings节点</h4><p>配置<settings>节点</settings></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;cacheEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadingEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;autoMppingBehavior&quot;</span> <span class="attr">value</span>=<span class="string">&quot;PARTAL&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>解析过程：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Properties <span class="title">settingsAsProperties</span><span class="params">(XNode context)</span></span>&#123;</span><br><span class="line">	<span class="comment">//获取settings子节点中的内容</span></span><br><span class="line">    Properties props = context.getChildrenAsProperties();</span><br><span class="line">    <span class="comment">//创建Configuration类的“元信息”对象</span></span><br><span class="line">    MetaClass metaConfig = MetaClass.forClass(Configuration.class,localReflectorFactory);</span><br><span class="line">    <span class="keyword">for</span>(Object key : props.keySet())&#123;</span><br><span class="line">		<span class="comment">//监测Configuration中是否存在相关属性</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li>解析 settings 子节点的内容，并将解析结果转成 Properties 对象 </li>
+<li>为 Configuration 创建元信息对象 </li>
+<li>通过 <strong>MetaClass</strong> 检测 Configuration 中是否存在某个属性的 <strong>setter 方法</strong>， 不存在则抛异常 </li>
+<li>若通过 MetaClass 的检测，则返回 <strong>Properties 对象</strong>，方法逻辑结束</li>
+</ol>
+<h4 id="1-3设置settings内容到Configuration中"><a href="#1-3设置settings内容到Configuration中" class="headerlink" title="1.3设置settings内容到Configuration中"></a>1.3设置settings内容到Configuration中</h4><p>settings节点内容解析出来后，可以将它存放到Configuration对象中,代码主要通过调用Configuration的setter方法</p>
+<h4 id="1-4解析typeAliases节点"><a href="#1-4解析typeAliases节点" class="headerlink" title="1.4解析typeAliases节点"></a>1.4解析typeAliases节点</h4><p>配置包名的方式，让Mybatis扫描包中的类型，并根据类型得到相应的别名，可配合Alias注解使用，即通过注解为某个类配置别名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;xyz.coolblog.chapter2.model1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;xyz.coolblog.chapter2.model2&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>手动的方式，明确为某个类型配置别名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">&quot;article&quot;</span> <span class="attr">type</span>=<span class="string">&quot;xyz.coolblog.chapter2.model.Article&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">&quot;author&quot;</span> <span class="attr">type</span>=<span class="string">&quot;xyz.coolblog.chapter2.model.Author&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>从<typeAlias>节点中解析并注册别名</typeAlias></p>
+<p>type属性是必须要配置的，而alias属性则不是必修的。如果使用者未配置alias属性，则需要mybatis自行为目标类型生成别名（使用类名的小写形式作为别名）。若别名为空，注册别名的任务交给<strong>registerAlias(Class&lt;?&gt;)**方法处理，若不为空，则由</strong>registerAlias(String, Class&lt;？&gt;**)进行别名注册</p>
+</li>
+<li><p>从指定的包中解析并注册别名</p>
+<p>查找指定包下的所有类，遍历查找到的类型集合，为每个类型注册别名</p>
+<ol>
+<li>通过 VFS（虚拟文件系统）获取指定包下的所有文件的路径名， </li>
+<li>比如 xyz/coolblog/model/Article.class </li>
+<li>筛选以.class 结尾的文件名 </li>
+<li>将路径名转成全限定的类名，通过类加载器加载类名 </li>
+<li>对类型进行匹配，若符合匹配规则，则将其放入内部集合中</li>
+</ol>
+</li>
+</ul>
+<p><strong>简单说就是创建了一个Map&lt;string,Class&lt;?&gt;&gt;，解析mybatis的配置文件，将alias元素的值作为Map的key，通过反射机制获得的type元素对应的类名的类作为Map的value值，在真正使用时通过alias别名来获取真正的类。</strong></p>
+<h4 id="1-5解析plugins节点"><a href="#1-5解析plugins节点" class="headerlink" title="1.5解析plugins节点"></a>1.5解析plugins节点</h4><p><strong>实现一个插件需要比简单，首先需要让插件类实现 Interceptor接口。然后在插件类上添加@Intercepts 和@Signature 注解，用于指定想要拦截的目标方法</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">&quot;xyz.coolblog.mybatis.ExamplePlugin&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;key&quot;</span> <span class="attr">value</span>=<span class="string">&quot;value&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>插件的解析过程：获取配置，然后再解析拦截器类型，并实例化拦截器，最后向拦截器中设置属性，并将拦截器添加到Configuration中</p>
+<h4 id="1-6解析environments节点"><a href="#1-6解析environments节点" class="headerlink" title="1.6解析environments节点"></a>1.6解析environments节点</h4><p>mybatis中，事务管理器和数据源配置在environments节点中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.url&#125;&quot;</span>/&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>解析过程：获取environments的default属性，environment节点的id要与父节点environments的属性default内容一致，解析transactionManager节点，解析dataSource节点，创建DataSource对象，创建Environment对象并设置到configuration中。</p>
+<h4 id="1-7解析typeHandlers节点"><a href="#1-7解析typeHandlers节点" class="headerlink" title="1.7解析typeHandlers节点"></a>1.7解析typeHandlers节点</h4><p>在向数据库存储或读取数据时，我们需要将数据库字段类型和Java类型进行转换。下面是类型处理器的配置方法：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--自动扫描--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--自动扫描注册类型处理器时，应使用@MappedTypes和@MappedJdbcTypes注解配置javaType和jdbcType&gt;</span></span><br><span class="line"><span class="comment">&lt;typeHandlers&gt;</span></span><br><span class="line"><span class="comment">	&lt;package name=&quot;xyz.coolblog.handlers&quot;/&gt;</span></span><br><span class="line"><span class="comment">&lt;/typeHandlers&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&lt;!--手动配置--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeHandlers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">typeHandler</span> <span class="attr">jdbcType</span>=<span class="string">&quot;TINYINT&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">javaType</span>=<span class="string">&quot;xyz.coolblog.constant.ArticleTypeEnum&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">handler</span>=<span class="string">&quot;xyz.coolblog.mybatis.ArticleTypeHandler&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeHandlers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>解析xml并调用不同的类型处理器注册方法</p>
+<p><img src="https://gitee.com/floydzzx/tuchuang/raw/master/img/20210219153412.png" alt="image-20210219153412102"></p>
+<ul>
+<li><p>当javaTypeClass != null&amp;&amp;jdbcType != null时，即明确配置了javaType和jdbcType属性的值，调用register(Class,jdbcType,Class)进行注册，即把类型和处理器进行映射</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Type javaType, JdbcType jdbcType,TypeHandler&lt;?&gt; handler)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(javaType != <span class="keyword">null</span>)&#123;</span><br><span class="line">		<span class="comment">//jdbcType到TypeHandler的映射</span></span><br><span class="line">        Map&lt;JdbcType, TypeHandler&lt;?&gt;&gt; map = TYPE_HANDLER_MAP.get(javaType);</span><br><span class="line">        <span class="keyword">if</span>(map==<span class="keyword">null</span>||map == NULL_TYPE_HANDLER_MAP)&#123;</span><br><span class="line">            map = <span class="keyword">new</span> HashMap&lt;JdbcType, TypeHandler&lt;?&gt;&gt;();</span><br><span class="line">            <span class="comment">//存储javaType到Map&lt;JdbcType, TypeHandler&gt;的映射</span></span><br><span class="line">            TYPE_HANDLER_MAP.put(javaType,map);</span><br><span class="line">        &#125;</span><br><span class="line">        map.put(jdbcType,handler);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//存储所有的TypeHandler</span></span><br><span class="line">    ALL_TYPE_HANDLERS_MAP.put(handler.getClass(),handler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>当javaType != NULL&amp;&amp;JdbcType == null时，即仅设置了javaType的值，调用register(Class&lt;?&gt; javaTypeClass, Class&lt;? &gt; typeHandlerClass),主要做的是尝试从注解中获取JdbcType的值</p>
+</li>
+<li><p>当javaType == NULL&amp;&amp;JdbcType ！= null时，即仅设置了javaType的值，调用register(Class&lt;? &gt; typeHandlerClass),主要做的是尝试解析javaType的值</p>
+</li>
+</ul>
+<h3 id="2-映射文件解析过程"><a href="#2-映射文件解析过程" class="headerlink" title="2.映射文件解析过程"></a>2.映射文件解析过程</h3><p>Mybatis会在解析配置文件的过程中对映射文件进行解析，解析逻辑封装在mapperElement方法中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XMLConfigBuilder</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mapperElement</span><span class="params">(XNode parent)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(parent!=<span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span>(XNode child:parent.getChildren())&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;package&quot;</span>.equals(child.getName()))&#123;</span><br><span class="line">                <span class="comment">//获取&lt;package&gt;节点中的name属性</span></span><br><span class="line">                String mapperPackage = child.getStringAttribute(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">                <span class="comment">//从注定包中查找mapper接口，并根据mapper接口解析映射配置</span></span><br><span class="line">                configuration.addMappers(mapperPackage);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">//获取resource/url/class等属性</span></span><br><span class="line">                <span class="comment">//resource不为空，则从指定路径加载配置</span></span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码的主要逻辑是遍历 mappers 的子节点，并根据节点属性值判断通过何种方式加载映射文件或映射信息。这里<strong>把配置在注解中的内容称为映射信息，以 XML 为载体的配置称为映射文件</strong>。在 MyBatis 中，共有四种加载映射文件或映射信息的方式。第一种是从文件系统中加载映射文件；第二种是通过 URL 的方式加载映射文件；第三种是通过 mapper 接口加载映射信息，映射信息可以配置在注解中，也可以配置在映射文件中。最后一种是通过包扫描的方式获取到某个包下的所有类，并使用第三种方式为每个类解析映射信息。</p>
+<p>下面分析映射文件的解析过程，先看映射文件解析入口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XMLMapperBuilder</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">parse</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//监测映射文件是否已被解析过</span></span><br><span class="line">    <span class="keyword">if</span>(!configuration.isResourceLoaded(resource))&#123;</span><br><span class="line">        <span class="comment">//解析mapper节点</span></span><br><span class="line">        configurationElement(parser.evalNode(<span class="string">&quot;/mapper&quot;</span>));</span><br><span class="line">        <span class="comment">//添加资源路径到“已解析资源集合&quot;中</span></span><br><span class="line">        configuration.addLoadedResource(resource);</span><br><span class="line">        <span class="comment">//通过命名空间绑定Mapper接口</span></span><br><span class="line">        bindMapperForNamespace();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//处理未完成解析的节点</span></span><br><span class="line">        parsePendingResultMaps();</span><br><span class="line">        parsePendingCacheRefs();</span><br><span class="line">        parsePendingStatements();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>映射文件解析入口逻辑包含三个核心操作，如下： </p>
+<ol>
+<li>解析 mapper 节点 </li>
+<li>通过命名空间绑定 Mapper 接口 </li>
+<li>处理未完成解析的节点</li>
+</ol>
+<h4 id="2-1解析映射文件"><a href="#2-1解析映射文件" class="headerlink" title="2.1解析映射文件"></a>2.1解析映射文件</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;xyz.coolblog.dao.AuthorDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">cache</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;authorResult&quot;</span> <span class="attr">type</span>=<span class="string">&quot;Author&quot;</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">colunn</span>=<span class="string">&quot;id&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;name&quot;</span> <span class="attr">column</span>=<span class="string">&quot;name&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--...--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;table&quot;</span>&gt;</span></span><br><span class="line">		author</span><br><span class="line">    <span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findOne&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;authorResult&quot;</span>&gt;</span></span><br><span class="line">		SELECT</span><br><span class="line">        	id,name,age,sex,email</span><br><span class="line">       	 FROM</span><br><span class="line">        	<span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;table&quot;</span>/&gt;</span></span><br><span class="line">         WHERE</span><br><span class="line">        	id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>以上配置中每种节点的解析逻辑都封装在了相应的方法中 ,这 些方法由 <strong>XMLMapperBuilder</strong> 类的<strong>configurationElement</strong> 方法统一调用。该方法的逻辑如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">configurationElement</span><span class="params">(XNode context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">		<span class="comment">//获取mapper命名空间</span></span><br><span class="line">        String namespace = context.getStringAttribute(<span class="string">&quot;namespace&quot;</span>);</span><br><span class="line">        <span class="comment">//异常处理</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置命名空间到builderAssistant</span></span><br><span class="line">    builderAssistant.setCurrentNamespace(namespace);</span><br><span class="line">    <span class="comment">//解析cache-ref节点</span></span><br><span class="line">    cacheRefElement(context.evalNode(<span class="string">&quot;cache-ref&quot;</span>));</span><br><span class="line">    <span class="comment">//解析cache节点</span></span><br><span class="line">    cacheElement(context.evalNode(<span class="string">&quot;chche&quot;</span>));</span><br><span class="line">    <span class="comment">//解析resultMap节点</span></span><br><span class="line">    resultMapElements(context.evalNodes(<span class="string">&quot;/mapper/resultMap&quot;</span>));</span><br><span class="line">    <span class="comment">//解析sql节点 </span></span><br><span class="line">    sqlElement(context.evalNodes(<span class="string">&quot;/mapper/sql&quot;</span>));</span><br><span class="line">    <span class="comment">//解析select、delete等节点</span></span><br><span class="line">    buildStatementFromContext(context.evalNodes(<span class="string">&quot;select|insert|update|delete&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2解析cache节点"><a href="#2-2解析cache节点" class="headerlink" title="2.2解析cache节点"></a>2.2解析cache节点</h4><p>mybatis提供两级缓存，一级缓存是SqlSession级别，默认为开启状态；二级缓存配置在映射文件中，使用者需要显示配置才能开启</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cache</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">eviction</span>=<span class="string">&quot;FIFO&quot;</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">flushInterval</span>=<span class="string">&quot;60000&quot;</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">size</span>=<span class="string">&quot;512&quot;</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">readOnly</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>根据上面的配置创建出的缓存有以下特点： </p>
+<ol>
+<li>按先进先出的策略淘汰缓存项 </li>
+<li>缓存的容量为 512 个对象引用 </li>
+<li>缓存每隔 60 秒刷新一次 </li>
+<li>缓存返回的对象是写安全的，即在外部修改对象不会影响到缓存内部存储对象</li>
+</ol>
+<p>缓存配置解析：</p>
+<h4 id="2-3解析cache-ref节点"><a href="#2-3解析cache-ref节点" class="headerlink" title="2.3解析cache-ref节点"></a>2.3解析cache-ref节点</h4><h4 id="2-4解析resultMap节点"><a href="#2-4解析resultMap节点" class="headerlink" title="2.4解析resultMap节点"></a>2.4解析resultMap节点</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mybatis-config.xml 中 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--User类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">&quot;com.someapp.model.User&quot;</span> <span class="attr">alias</span>=<span class="string">&quot;User&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- SQL 映射 XML 中 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectUsers&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;User&quot;</span>&gt;</span></span><br><span class="line">  select id, username, hashedPassword</span><br><span class="line">  from some_table</span><br><span class="line">  where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--显示配置resultMap--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;userResultMap&quot;</span> <span class="attr">type</span>=<span class="string">&quot;User&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">column</span>=<span class="string">&quot;user_id&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;username&quot;</span> <span class="attr">column</span>=<span class="string">&quot;user_name&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;password&quot;</span> <span class="attr">column</span>=<span class="string">&quot;hashed_password&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>获取resultMap节点的各种属性 </p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> ResultMap <span class="title">resultMapElement</span><span class="params">(XNode resultMapNode,  </span></span></span><br><span class="line"><span class="function"><span class="params">List&lt;ResultMapping&gt; additionalResultMappings)</span> <span class="keyword">throws</span> Exception </span>&#123; </span><br><span class="line">ErrorContext.instance().activity(<span class="string">&quot;processing &quot;</span> +  </span><br><span class="line"> resultMapNode.getValueBasedIdentifier()); </span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 获取 id 和 type 属性 </span></span><br><span class="line">String id = resultMapNode.getStringAttribute(<span class="string">&quot;id&quot;</span>,  </span><br><span class="line"> resultMapNode.getValueBasedIdentifier()); </span><br><span class="line">    String type = resultMapNode.getStringAttribute(<span class="string">&quot;type&quot;</span>, </span><br><span class="line">        resultMapNode.getStringAttribute(<span class="string">&quot;ofType&quot;</span>, </span><br><span class="line">            resultMapNode.getStringAttribute(<span class="string">&quot;resultType&quot;</span>, </span><br><span class="line">                resultMapNode.getStringAttribute(<span class="string">&quot;javaType&quot;</span>)))); </span><br><span class="line">    <span class="comment">// 获取 extends 和 autoMapping </span></span><br><span class="line">    String extend = resultMapNode.getStringAttribute(<span class="string">&quot;extends&quot;</span>); </span><br><span class="line">    Boolean autoMapping = resultMapNode.getBooleanAttribute(<span class="string">&quot;autoMapping&quot;</span>); </span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 解析 type 属性对应的类型 </span></span><br><span class="line">    Class&lt;?&gt; typeClass = resolveClass(type); </span><br><span class="line">    Discriminator discriminator = <span class="keyword">null</span>; </span><br><span class="line">    List&lt;ResultMapping&gt; resultMappings = <span class="keyword">new</span> ArrayList&lt;ResultMapping&gt;(); </span><br><span class="line">    resultMappings.addAll(additionalResultMappings);</span><br></pre></td></tr></table></figure></li>
+<li><p>遍历resultMap的子节点，并根据子节点名称执行相应的解析逻辑 </p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取并遍历 &lt;resultMap&gt; 的子节点列表</span></span><br><span class="line">List&lt;XNode&gt; resultChildren = resultMapNode.getChildren(); </span><br><span class="line">    <span class="keyword">for</span> (XNode resultChild : resultChildren) &#123; </span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;constructor&quot;</span>.equals(resultChild.getName())) &#123; </span><br><span class="line">            <span class="comment">// 解析 constructor 节点，并生成相应的 ResultMapping </span></span><br><span class="line"> </span><br><span class="line">          processConstructorElement(resultChild, typeClass, resultMappings); </span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;discriminator&quot;</span>.equals(resultChild.getName())) &#123; </span><br><span class="line">            <span class="comment">// 解析 discriminator 鉴别器节点 </span></span><br><span class="line">            discriminator = processDiscriminatorElement( </span><br><span class="line">  resultChild, typeClass, resultMappings); </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">            List&lt;ResultFlag&gt; flags = <span class="keyword">new</span> ArrayList&lt;ResultFlag&gt;(); </span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;id&quot;</span>.equals(resultChild.getName())) &#123; </span><br><span class="line">                <span class="comment">// 添加 ID 到 flags 集合中 </span></span><br><span class="line">                flags.add(ResultFlag.ID); </span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">// 解析 id 和 property 节点，并生成相应的 ResultMapping </span></span><br><span class="line">            resultMappings.add(buildResultMappingFromContext( </span><br><span class="line"> resultChild, typeClass, flags)); </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">ResultMapResolver resultMapResolver = <span class="keyword">new</span> ResultMapResolver( </span><br><span class="line"> builderAssistant, id, typeClass, extend, discriminator,  </span><br><span class="line"> resultMappings, autoMapping);</span><br></pre></td></tr></table></figure></li>
+<li><p>构建 ResultMap 对象 </p>
+</li>
+<li><p>若构建过程中发生异常，则将 resultMapResolver 添加到<br>  incompleteResultMaps 集合中</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123; </span><br><span class="line">        <span class="comment">// 根据前面获取到的信息构建 ResultMap 对象 </span></span><br><span class="line">        <span class="keyword">return</span> resultMapResolver.resolve(); </span><br><span class="line">    &#125; <span class="keyword">catch</span> (IncompleteElementException e) &#123; </span><br><span class="line">        <span class="comment">/* </span></span><br><span class="line"><span class="comment">         * 如果发生 IncompleteElementException 异常， </span></span><br><span class="line"><span class="comment">         * 这里将 resultMapResolver 添加到 incompleteResultMaps 集合中 </span></span><br><span class="line"><span class="comment">         */</span>  </span><br><span class="line">        configuration.addIncompleteResultMap(resultMapResolver); </span><br><span class="line">        <span class="keyword">throw</span> e; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>解析id和result节点</p>
+</li>
+<li><p>resultMap 属性的解析过程<br>要相对复杂一些。该属性存在于<association>和<collection>节点</collection></association></p>
+</li>
+<li><pre><code class="xml">&lt;!--通过resultMap属性引用其他的resultMap节点--&gt;
+&lt;resultMap id=&quot;articleResult&quot; type=&quot;Article&quot;&gt; 
+    &lt;id property=&quot;id&quot; column=&quot;id&quot;/&gt; 
+    &lt;result property=&quot;title&quot; column=&quot;article_title&quot;/&gt; 
+&lt;association property=&quot;article_author&quot; column=&quot;article_author_id&quot;  
+ resultMap=&quot;authorResult&quot;/&gt; 
+&lt;/resultMap&gt; 
+
+&lt;resultMap id=&quot;authorResult&quot; type=&quot;Author&quot;&gt; 
+    &lt;id property=&quot;id&quot; column=&quot;author_id&quot;/&gt; 
+    &lt;result property=&quot;name&quot; column=&quot;author_name&quot;/&gt; 
+&lt;/resultMap&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &#96;&#96;&#96;xml</span><br><span class="line">  &lt;!--采取resultMap嵌套的方式进行配置--&gt;</span><br><span class="line">  &lt;resultMap id&#x3D;&quot;articleResult&quot; type&#x3D;&quot;Article&quot;&gt; </span><br><span class="line">      &lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot;&#x2F;&gt; </span><br><span class="line">      &lt;result property&#x3D;&quot;title&quot; column&#x3D;&quot;article_title&quot;&#x2F;&gt; </span><br><span class="line">     &lt;association property&#x3D;&quot;article_author&quot; javaType&#x3D;&quot;Author&quot;&gt; </span><br><span class="line">          &lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;author_id&quot;&#x2F;&gt; </span><br><span class="line">          &lt;result property&#x3D;&quot;name&quot; column&#x3D;&quot;author_name&quot;&#x2F;&gt; </span><br><span class="line">      &lt;&#x2F;association&gt; </span><br><span class="line">  &lt;&#x2F;resultMap&gt;</span><br></pre></td></tr></table></figure>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" rel="next" title="操作系统概述">
+                <i class="fa fa-chevron-left"></i> 操作系统概述
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/17/%E5%88%86%E5%B8%83%E5%BC%8F%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" rel="prev" title="分布式链路追踪">
+                分布式链路追踪 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myavatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">1.配置文件解析过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E8%A7%A3%E6%9E%90properties%E8%8A%82%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">1.1解析properties节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E8%A7%A3%E6%9E%90settings%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">1.2解析settings节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3%E8%AE%BE%E7%BD%AEsettings%E5%86%85%E5%AE%B9%E5%88%B0Configuration%E4%B8%AD"><span class="nav-number">1.3.</span> <span class="nav-text">1.3设置settings内容到Configuration中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4%E8%A7%A3%E6%9E%90typeAliases%E8%8A%82%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">1.4解析typeAliases节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5%E8%A7%A3%E6%9E%90plugins%E8%8A%82%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">1.5解析plugins节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6%E8%A7%A3%E6%9E%90environments%E8%8A%82%E7%82%B9"><span class="nav-number">1.6.</span> <span class="nav-text">1.6解析environments节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7%E8%A7%A3%E6%9E%90typeHandlers%E8%8A%82%E7%82%B9"><span class="nav-number">1.7.</span> <span class="nav-text">1.7解析typeHandlers节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2.映射文件解析过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%A7%A3%E6%9E%90%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1解析映射文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E8%A7%A3%E6%9E%90cache%E8%8A%82%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">2.2解析cache节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3%E8%A7%A3%E6%9E%90cache-ref%E8%8A%82%E7%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">2.3解析cache-ref节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4%E8%A7%A3%E6%9E%90resultMap%E8%8A%82%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">2.4解析resultMap节点</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zzx</span>
+
+  
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+<span id="busuanzi_container_site_uv">
+  本站访问次数：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+</span>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
